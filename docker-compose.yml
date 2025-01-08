@@ -1,0 +1,27 @@
+services:
+  qbittorrent:
+    container_name: qbittorrent
+    restart: unless-stopped
+    environment:
+      - PUID=0
+      - PGID=0
+      - TZ=Etc/UTC
+      - WEBUI_PORT=8112
+    ports:
+      - 8112:8112
+    volumes:
+      - /mnt/qbit/config:/config
+    image: lscr.io/linuxserver/qbittorrent:latest
+
+
+  qbit-port-forwarder:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    environment:
+      container_volumes_location: "/mnt"
+      node: "192.168.0.7"
+      ADMIN_USER: "admin"
+      ADMIN_PASS: "admin1234"
+    volumes:
+      - /mnt/gluetun:/mnt/gluetun
