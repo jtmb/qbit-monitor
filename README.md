@@ -5,7 +5,7 @@
 </h1>
 
 <div align="center">
-  <b>qbit-port-forwarder</b> - A self hosted sciplet that forwards the qbittorrent port based off the current port set for the glueten vpn container.
+  <b>qbit-port-forwarder</b> - A self hosted scriplet that keeps your qbittorrent port used for incoming connections synced with the GluetenVPN forwarded port.
   <br />
   <br />
   <a href="https://github.com/jtmb/qbit-port-forwarder/issues/new?assignees=&labels=bug&title=bug%3A+">Report a Bug</a>
