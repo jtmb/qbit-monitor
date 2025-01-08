@@ -1,6 +1,3 @@
-# qbit-port-forwarder
-
-
 <h1 align="center">
   <a href="https://github.com/jtmb">
     <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/6/66/New_qBittorrent_Logo.svg/1200px-New_qBittorrent_Logo.svg.png" alt="Logo" width="125" height="125">
@@ -8,8 +5,7 @@
 </h1>
 
 <div align="center">
-  <b>qbit-port-forwarder</b> - A self hosted sciplet that forwards qbittorrent port based off the glueten vpn container.
-.
+  <b>qbit-port-forwarder</b> - A self hosted sciplet that forwards the qbittorrent port based off the current port set for the glueten vpn container.
   <br />
   <br />
   <a href="https://github.com/jtmb/qbit-port-forwarder/issues/new?assignees=&labels=bug&title=bug%3A+">Report a Bug</a>
