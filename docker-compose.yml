@@ -23,5 +23,6 @@ services:
       node: "192.168.0.7"
       ADMIN_USER: "admin"
       ADMIN_PASS: "admin1234"
+      WAIT_TIME: "1h"
     volumes:
       - /mnt/gluetun:/mnt/gluetun
