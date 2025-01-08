@@ -46,7 +46,7 @@ The GluetenVPN container allows for port forwarding with PROTONVPN with the unfo
 - Docker installed on your system
 
 ### <h2>Getting Started</h2>
-### [Docker Image](https://hub.docker.com/r/jtmb92/ez-backups)
+### [Docker Image](https://hub.docker.com/r/jtmb92/qbit-port-forwarder)
 ```docker
  docker pull jtmb92/qbit-port-forwarder
 ```
