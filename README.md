@@ -37,11 +37,9 @@
 
 ---
 
-### <h1>About</h1>
+### <h1>About ( What problem does this solve? )</h1>
 
-An Alpine-based microservice within Docker, designed to make forwarding vpn ports easy.
-
-This solution proves invaluable for those who self-host torrents.
+The GluetenVPN container allows for port forwarding with PROTONVPN with the unfortunate downside that PROTON assigns a random port everytime you restart your container. This application will check the PROTON vpn forewarded port and update your qbittorrent application automatically.
 
 ## Prerequisites
 
