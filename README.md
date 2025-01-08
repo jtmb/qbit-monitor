@@ -58,14 +58,21 @@ services:
     qbit-port-forwarder:
         image: docker.io/jtmb92/qbit-port-forwarder
         container_name: qbit-port-forwarder
+        depends_on:
+            qbittorrent:
+                condition: service_started
+                restart: true
         environment:
-            container_volumes_location: '/mnt'
-            node: '192.168.0.5'
-            ADMIN_USER: 'brajam'
-            ADMIN_PASS: '${ADMIN_PASS}'
-            WAIT_TIME: '1h'
+            container_volumes_location: "/mnt"
+            node: "192.168.0.7"
+            ADMIN_USER: "admin"
+            ADMIN_PASS: "admin1234"
+            WAIT_TIME: "1h"
+            PUID: "1000"
+            PGID: "1000"
+            TZ: America/New_York
         volumes:
-         - ${container_volumes_location}/gluetun:/mnt/gluetun
+        - /mnt/gluetun:/mnt/gluetun
 ```
 
 ## Environment Variables explained  
@@ -92,7 +99,7 @@ Admin password for the service. This should be set as an environment variable or
 Time to wait before performing a port forward operation (can be set in hours, minutes, or seconds).  
 ```yaml
     volumes: 
-        - ${container_volumes_location}/gluetun:/mnt/gluetun
+        - /mnt/gluetun:/mnt/gluetun
 ```  
 The path to mount the `gluetun` directory in the container.  
 
