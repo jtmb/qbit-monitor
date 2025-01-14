@@ -44,8 +44,8 @@ The GluetenVPN container allows for port forwarding with PROTONVPN with the unfo
 
 
 <div style="display: flex; justify-content: space-between;">
-  <img src="src/screenshot.png" alt="Description of first image" style="width: 40%;">
-  <img src="src/screenshot2.png" alt="Description of second image" style="width:100%;">
+  <img src="src/screenshot.png" alt="Description of first image">
+  <img src="src/screenshot2.png" alt="Description of second image">
 </div>
 
 
