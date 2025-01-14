@@ -5,14 +5,14 @@
 </h1>
 
 <div align="center">
-  <b>qbit-port-forwarder</b> - Monitor your qBittorrent WEBUI and get push notifications.
+  <b>qbit-monitor</b> - Monitor your qBittorrent WEBUI and get push notifications.
   <br />
   <br />
-  <a href="https://github.com/jtmb/qbit-port-forwarder/issues/new?assignees=&labels=bug&title=bug%3A+">Report a Bug</a>
+  <a href="https://github.com/jtmb/qbit-monitor/issues/new?assignees=&labels=bug&title=bug%3A+">Report a Bug</a>
   ·
-  <a href="https://github.com/jtmb/qbit-port-forwarder/issues/new?assignees=&labels=enhancement&template=02_FEATURE_REQUEST.md&title=feat%3A+">Request a Feature</a>
+  <a href="https://github.com/jtmb/qbit-monitor/issues/new?assignees=&labels=enhancement&template=02_FEATURE_REQUEST.md&title=feat%3A+">Request a Feature</a>
   .
-  <a href="https://hub.docker.com/repository/docker/jtmb92/qbit-port-forwarder/general">Docker Hub</a>
+  <a href="https://hub.docker.com/repository/docker/jtmb92/qbit-monitor/general">Docker Hub</a>
 </div>
 <br>
 <details open="open">
@@ -47,18 +47,18 @@ The GluetenVPN container allows for port forwarding with PROTONVPN with the unfo
 - Docker installed on your system
 
 ### <h2>Getting Started</h2>
-### [Docker Image](https://hub.docker.com/r/jtmb92/qbit-port-forwarder)
+### [Docker Image](https://hub.docker.com/r/jtmb92/qbit-monitor)
 ```docker
- docker pull jtmb92/qbit-port-forwarder
+ docker pull jtmb92/qbit-monitor
 ```
 
 ### Running on Docker Compose  
 Run on Docker Compose (this is the recommended way) by running the command "docker compose up -d".  
 ```yaml
 services:
-    qbit-port-forwarder:
-        image: docker.io/jtmb92/qbit-port-forwarder
-        container_name: qbit-port-forwarder
+    qbit-monitor:
+        image: docker.io/jtmb92/qbit-monitor
+        container_name: qbit-monitor
         depends_on:
             qbittorrent:
                 condition: service_started
@@ -125,14 +125,3 @@ Please try to create bug reports that are:
 This project is licensed under the **GNU GENERAL PUBLIC LICENSE v3**. Feel free to edit and distribute this template as you like.
 
 See [LICENSE](LICENSE) for more information.
-
-
-
-
-
-
-docker build --platform linux/amd64 -t jtmb92/qbit-port-forwarder:amd64 .
-docker push jtmb92/qbit-port-forwarder:amd64
-
-docker build --platform linux/amd64 -t jtmb92/qbit-port-forwarder:latest .
-docker push jtmb92/qbit-port-forwarder:latest
