@@ -43,13 +43,18 @@ Monitors your qBittorrent for new / completed torrents and notifies on discord, 
 The GluetenVPN container allows for port forwarding with PROTONVPN with the unfortunate downside that PROTON assigns a random port everytime you restart your container. This application will check the vpn forewarded port and update your qbittorrent application automatically.
 
 
-<div style="display: flex; justify-content: space-between;">
-  <img src="src/screenshot.png" alt="Description of first image" style="width: 610px; height: auto; border-radius: 5%;">
-</div>
+<details>
+  <summary>View Screenshots</summary>
+  <div style="display: flex; gap: 10px; margin-top: 10px;">
+    <img src="src/screenshot.png" alt="Description of first image" style="width: 50%; height: auto; border-radius: 5%;">
+    <img src="src/screenshot2.png" alt="Description of second image" style="width: 50%; height: auto; border-radius: 5%;">
+  </div>
+</details>
 
-<div style="display: flex; justify-content: space-between;">
-  <img src="src/screenshot2.png" alt="Description of first image" style="width: 610px; height: auto; border-radius: 5%;"> 
-</div>
+
+
+
+## Prerequisites
 
 - Docker installed on your system
 
