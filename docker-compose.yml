@@ -25,13 +25,16 @@ services:
         condition: service_started
         restart: true
     environment:
-      container_volumes_location: "/mnt"
-      node: "192.168.0.7"
-      ADMIN_USER: "admin"
-      ADMIN_PASS: "admin1234"
-      WAIT_TIME: "10s"
+      QBITTORRENT_HOST: "http://192.168.0.7:8112"
+      QBITTORRENT_USERNAME: "admin"
+      QBITTORRENT_PASSWORD: "admin1234"
+      CHECK_INTERVAL_TORRENT_MONITORING: 10s
+      CHECK_INTERVAL_FORWARDED_PORT: 1h
+      PORT_FORWARD_FILE: /mnt/gluetun/forwarded_port
+      DISCORD_WEBHOOK_URL: 
       PUID: "1000"
       PGID: "1000"
       TZ: America/New_York
+
     volumes:
       - /mnt/gluetun:/mnt/gluetun

@@ -5,7 +5,7 @@
 </h1>
 
 <div align="center">
-  <b>qbit-port-forwarder</b> - A self hosted scriplet that keeps your qbittorrent port used for incoming connections synced with the GluetenVPN forwarded port.
+  <b>qbit-port-forwarder</b> - Monitor your qBittorrent WEBUI and get push notifications.
   <br />
   <br />
   <a href="https://github.com/jtmb/qbit-port-forwarder/issues/new?assignees=&labels=bug&title=bug%3A+">Report a Bug</a>
@@ -19,7 +19,6 @@
 <summary>Table of Contents</summary>
 
 - [About](#about)
-    - [Highlighted Features](#highlighted-features)
 - [Prerequisites](#prerequisites)
 - [Getting Started](#getting-started)
     - [Docker Image](#docker-image)
@@ -39,7 +38,9 @@
 
 ### <h1>About ( What problem does this solve? )</h1>
 
-The GluetenVPN container allows for port forwarding with PROTONVPN with the unfortunate downside that PROTON assigns a random port everytime you restart your container. This application will check the PROTON vpn forewarded port and update your qbittorrent application automatically.
+Monitors your qBittorrent for new / completed torrents and notifies on discord, also handles qbittorrent meta data stuck torrents.
+
+The GluetenVPN container allows for port forwarding with PROTONVPN with the unfortunate downside that PROTON assigns a random port everytime you restart your container. This application will check the vpn forewarded port and update your qbittorrent application automatically.
 
 ## Prerequisites
 
@@ -63,14 +64,19 @@ services:
                 condition: service_started
                 restart: true
         environment:
-            container_volumes_location: "/mnt"
-            node: "192.168.0.7"
-            ADMIN_USER: "admin"
-            ADMIN_PASS: "admin1234"
-            WAIT_TIME: "1h"
+            QBITTORRENT_HOST: "http://192.168.0.5:8112"
+            QBITTORRENT_USERNAME: "admin"
+            QBITTORRENT_PASSWORD: "admin1234"
+            CHECK_INTERVAL_TORRENT_MONITORING: 10s
+            CHECK_INTERVAL_FORWARDED_PORT: 1h
+            NOTIFIED_FILE: notified_torrents.txt
+            PORT_FORWARD_FILE: /mnt/gluetun/forwarded_port
+            WAIT_TIME: "10s"
             PUID: "1000"
             PGID: "1000"
             TZ: America/New_York
+            DISCORD_WEBHOOK_URL: xxxx
+
         volumes:
         - /mnt/gluetun:/mnt/gluetun
 ```
