@@ -13,7 +13,7 @@ RUN ln -sf /usr/share/zoneinfo/$TZ /etc/localtime \
 # Install necessary packages
 
 # Create a non-root user and group using the PUID and PGID
-RUN mkdir /app && \
+RUN mkdir /app /app/state && \
     addgroup -g ${PGID} appgroup && \
     adduser -u ${PUID} -G appgroup -S appuser
 
@@ -23,9 +23,10 @@ COPY modules /app/modules
 
 # Change ownership of the script to the non-root user and make it executable
 RUN chown appuser:appgroup /app && \
+    chown appuser:appgroup /app/state && \
     chown appuser:appgroup /app/main.sh && \
-    chmod +x /app/main.sh && \
     chown -R appuser:appgroup /app/modules && \
+    chmod +x /app/main.sh && \
     chmod -R +r /app/modules
 
 # Switch to the non-root user

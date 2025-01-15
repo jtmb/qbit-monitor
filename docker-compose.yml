@@ -31,7 +31,7 @@ services:
       CHECK_INTERVAL_TORRENT_MONITORING: 10s
       CHECK_INTERVAL_FORWARDED_PORT: 1h
       PORT_FORWARD_FILE: /mnt/gluetun/forwarded_port
-      DISCORD_WEBHOOK_URL: 
+      DISCORD_WEBHOOK_URL: 123
       PUID: "1000"
       PGID: "1000"
 

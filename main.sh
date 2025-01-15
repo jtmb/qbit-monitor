@@ -10,7 +10,7 @@
     # PORT_FORWARD_FILE=/mnt/gluetun/forwarded_port
 
 # Set mandatory VARs
-NOTIFIED_FILE="notified_torrents.txt"
+NOTIFIED_FILE="state/notified_torrents.txt"
 
 # Source modules
 source modules/banner.sh
