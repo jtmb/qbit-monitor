@@ -13,25 +13,26 @@ RUN ln -sf /usr/share/zoneinfo/$TZ /etc/localtime \
 # Install necessary packages
 
 # Create a non-root user and group using the PUID and PGID
-RUN addgroup -g ${PGID} appgroup && \
+RUN mkdir /app && \
+    addgroup -g ${PGID} appgroup && \
     adduser -u ${PUID} -G appgroup -S appuser
 
 # Copy the script into the container
-COPY main.sh /usr/local/bin/main.sh
-COPY modules /usr/local/bin/modules
+COPY main.sh /app/main.sh
+COPY modules /app/modules
 
 # Change ownership of the script to the non-root user and make it executable
-RUN chown appuser:appgroup /usr/local/bin && \
-    chown appuser:appgroup /usr/local/bin/main.sh && \
-    chmod +x /usr/local/bin/main.sh && \
-    chown -R appuser:appgroup /usr/local/bin/modules && \
-    chmod -R +r /usr/local/bin/modules
+RUN chown appuser:appgroup /app && \
+    chown appuser:appgroup /app/main.sh && \
+    chmod +x /app/main.sh && \
+    chown -R appuser:appgroup /app/modules && \
+    chmod -R +r /app/modules
 
 # Switch to the non-root user
 USER appuser
 
 # Set the working directory
-WORKDIR /usr/local/bin
+WORKDIR /app
 
 # Run the script by default when the container starts
-CMD ["/bin/bash", "/usr/local/bin/main.sh"]
+CMD ["/bin/bash", "/app/main.sh"]
