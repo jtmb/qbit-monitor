@@ -31,17 +31,18 @@ check_var "CHECK_INTERVAL_TORRENT_MONITORING"
 check_var "CHECK_INTERVAL_FORWARDED_PORT"
 check_var "NOTIFIED_FILE"
 
-# Check if qBittorrent is up before proceeding
-check_qbittorrent_status
-if [ $? -ne 0 ]; then
-    echo "qBittorrent is not accessible. Exiting..." >&2
-    exit 1
-fi
 
 # Initialize notified file
 if [[ ! -f "$NOTIFIED_FILE" ]]; then
     touch "$NOTIFIED_FILE"
 fi
+
+# Check if qBittorrent is up before proceeding
+# Retry the qBittorrent status check until successful
+while ! check_qbittorrent_status; do
+    echo "qBittorrent is not accessible. Retrying in 15 seconds..." >&2
+    sleep 15
+done
 
 # Login to qBittorrent
 login_to_qbittorrent
@@ -58,6 +59,12 @@ fi
 
 # Main loop
 while true; do
+    # Retry check_qbittorrent_status until it succeeds
+    if ! check_qbittorrent_status > /dev/null 2>&1; then
+        echo "qBittorrent is not accessible. Retrying in 15 seconds..." >&2
+        sleep 15
+        continue
+    fi
     torrents=$(get_torrents)
     check_new_torrents "$torrents" "$NOTIFIED_FILE"
     check_completed_torrents "$torrents" "$NOTIFIED_FILE"

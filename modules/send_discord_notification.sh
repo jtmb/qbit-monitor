@@ -10,7 +10,7 @@ send_discord_notification() {
     # Define the title and description for each notification type
     case "$message_type" in
         "new")
-            if [[ "${NEW_NOTIFICATION}" == "off" ]]; then
+            if [[ "${NEW_DOWNLOAD_NOTIFICATION}" == "off" ]]; then
                 echo "New torrent notifications are disabled."
                 return
             fi

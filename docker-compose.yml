@@ -25,17 +25,17 @@ services:
         condition: service_started
         restart: true
     environment:
+      DISCORD_WEBHOOK_URL: your-discord-token-here
       QBITTORRENT_HOST: "http://qbittorrent:8112"
       QBITTORRENT_USERNAME: "admin"
       QBITTORRENT_PASSWORD: "admin1234"
-      CHECK_INTERVAL_TORRENT_MONITORING: 10s
-      CHECK_INTERVAL_FORWARDED_PORT: 1h
       PORT_FORWARDING: "on"
       PORT_FORWARD_FILE: /mnt/gluetun/forwarded_port
-      DISCORD_WEBHOOK_URL: your-discord-token-here
-      NEW_NOTIFICATIONL: "on"
-      METADATA_STUCK_NOTIFICATION: "on"
+      CHECK_INTERVAL_FORWARDED_PORT: 10s
       PORT_UPDATED_NOTIFICATION: "on"
+      CHECK_INTERVAL_TORRENT_MONITORING: 10s
+      NEW_DOWNLOAD_NOTIFICATION: "on"
+      METADATA_STUCK_NOTIFICATION: "on"
       DOWNLOAD_COMPLETE_NOTIFICATION: "on"
       PUID: "1000"
       PGID: "1000"

@@ -35,8 +35,10 @@ login_to_qbittorrent() {
         grep -oP 'SID=.*?;' | tr -d ';')
 }
 
-# Get torrents from qBittorrent
+# Get torrents from qBittorrent (fetch fresh cookie each time)
 get_torrents() {
+    # Always fetch the cookie before making the request
+    login_to_qbittorrent
     curl -s -X GET "$QBITTORRENT_HOST/api/v2/torrents/info" \
         -H "Cookie: $COOKIE"
 }
