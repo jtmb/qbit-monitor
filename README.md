@@ -98,14 +98,18 @@ services:
             condition: service_started
             restart: true
     environment:
+      DISCORD_WEBHOOK_URL: your-discord-token-here
       QBITTORRENT_HOST: "http://qbittorrent:8112"
       QBITTORRENT_USERNAME: "admin"
       QBITTORRENT_PASSWORD: "admin1234"
-      CHECK_INTERVAL_TORRENT_MONITORING: 10s
-      CHECK_INTERVAL_FORWARDED_PORT: 1h
       PORT_FORWARDING: "on"
       PORT_FORWARD_FILE: /mnt/gluetun/forwarded_port
-      DISCORD_WEBHOOK_URL: your-discord-webhook-here
+      CHECK_INTERVAL_FORWARDED_PORT: 1h
+      PORT_UPDATED_NOTIFICATION: "on"
+      CHECK_INTERVAL_TORRENT_MONITORING: 10s
+      NEW_DOWNLOAD_NOTIFICATION: "on"
+      METADATA_STUCK_NOTIFICATION: "on"
+      DOWNLOAD_COMPLETE_NOTIFICATION: "on"
       PUID: "1000"
       PGID: "1000"
     volumes:
@@ -115,7 +119,10 @@ services:
 
 ## Environment Variables Explained  
 
-- `QBITTORRENT_HOST: "http://192.168.0.7:8112"`
+- `DISCORD_WEBHOOK_URL: your-discord-token-here`
+  - The URL of the Discord webhook used to send notifications.
+
+- `QBITTORRENT_HOST: "http://qbittorrent:8112"`
   - The URL for the qBittorrent web interface, including the protocol and port.
 
 - `QBITTORRENT_USERNAME: "admin"`
@@ -124,20 +131,29 @@ services:
 - `QBITTORRENT_PASSWORD: "admin1234"`
   - The password for authenticating with the qBittorrent web interface.
 
-- `CHECK_INTERVAL_TORRENT_MONITORING: 10s`
-  - The time interval for monitoring torrents, defined in seconds (`s`), minutes (`m`), or hours (`h`).
-
-- `CHECK_INTERVAL_FORWARDED_PORT: 1h`
-  - The time interval for checking and updating the forwarded port, defined in seconds (`s`), minutes (`m`), or hours (`h`).
-
-- `PORT_FORWARDING: "off"`
+- `PORT_FORWARDING: "on"`
   - Specifies whether port forwarding is enabled or disabled. Use `on` to enable and `off` to disable.
 
 - `PORT_FORWARD_FILE: /mnt/gluetun/forwarded_port`
   - The file path on the host machine where the forwarded port information is stored.
 
-- `DISCORD_WEBHOOK_URL: 123`
-  - The URL of the Discord webhook used to send notifications.
+- `CHECK_INTERVAL_FORWARDED_PORT: 10s`
+  - The time interval for checking and updating the forwarded port, defined in seconds (`s`), minutes (`m`), or hours (`h`).
+
+- `PORT_UPDATED_NOTIFICATION: "on"`
+  - Specifies whether notifications for updated ports are enabled or disabled. Use `on` to enable and `off` to disable.
+
+- `CHECK_INTERVAL_TORRENT_MONITORING: 10s`
+  - The time interval for monitoring torrents, defined in seconds (`s`), minutes (`m`), or hours (`h`).
+
+- `NEW_DOWNLOAD_NOTIFICATION: "on"`
+  - Specifies whether notifications for new downloads are enabled or disabled. Use `on` to enable and `off` to disable.
+
+- `METADATA_STUCK_NOTIFICATION: "on"`
+  - Specifies whether notifications for torrents stuck on metadata are enabled or disabled. Use `on` to enable and `off` to disable.
+
+- `DOWNLOAD_COMPLETE_NOTIFICATION: "on"`
+  - Specifies whether notifications for completed downloads are enabled or disabled. Use `on` to enable and `off` to disable.
 
 - `PUID: "1000"`
   - The user ID to run the container processes as, matching the host system's user.
