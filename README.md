@@ -66,8 +66,6 @@ Take your qBittorrent setup to the next level! 🚀
 </details>
 
 
-
-
 ## Prerequisites
 
 - Docker installed on your system
@@ -78,59 +76,84 @@ Take your qBittorrent setup to the next level! 🚀
  docker pull jtmb92/qbit-monitor
 ```
 
+> <span style="color:yellow;"> **Note:**</span> This container does not run as `root`. To ensure proper functionality, you must take ownership of the required directories on your host system and set the correct permissions before starting the container. For example:
+
+```bash
+username=$(whoami):
+sudo chown $username:$username /mnt/qbit-monitor
+sudo chmod 755 /mnt/qbit-monitor
+```
+
+
+
 ### Running on Docker Compose  
 Run on Docker Compose (this is the recommended way) by running the command "docker compose up -d".  
 ```yaml
 services:
-    qbit-monitor:
-        image: docker.io/jtmb92/qbit-monitor
-        container_name: qbit-monitor
-        depends_on:
-            qbittorrent:
-                condition: service_started
-                restart: true
-        environment:
-            QBITTORRENT_HOST: "http://qbittorrent:8112"
-            QBITTORRENT_USERNAME: "admin"
-            QBITTORRENT_PASSWORD: "admin1234"
-            CHECK_INTERVAL_TORRENT_MONITORING: 10s
-            CHECK_INTERVAL_FORWARDED_PORT: 1h
-            PORT_FORWARD_FILE: /mnt/gluetun/forwarded_port
-            DISCORD_WEBHOOK_URL: xxxx
-            PUID: "1000"
-            PGID: "1000"
-            TZ: America/New_York
-        volumes:
-        - /mnt/gluetun:/mnt/gluetun
+  qbit-monitor:
+    image: docker.io/jtmb92/qbit-monitor
+    container_name: qbit-monitor
+    depends_on:
+        qbittorrent:
+            condition: service_started
+            restart: true
+    environment:
+      QBITTORRENT_HOST: "http://qbittorrent:8112"
+      QBITTORRENT_USERNAME: "admin"
+      QBITTORRENT_PASSWORD: "admin1234"
+      CHECK_INTERVAL_TORRENT_MONITORING: 10s
+      CHECK_INTERVAL_FORWARDED_PORT: 1h
+      PORT_FORWARDING: "on"
+      PORT_FORWARD_FILE: /mnt/gluetun/forwarded_port
+      DISCORD_WEBHOOK_URL: your-discord-webhook-here
+      PUID: "1000"
+      PGID: "1000"
+    volumes:
+      - /mnt/gluetun:/mnt/gluetun
+      - /mnt/qbit-monitor:/app/state
 ```
 
-## Environment Variables explained  
+## Environment Variables Explained  
 
-```yaml
-    container_volumes_location: '/mnt'
-```  
-Location on the host machine where volumes will be mounted.  
-```yaml
-    node: '192.168.0.5'
-```  
-The IP address of the node you wish to connect to.  
-```yaml
-    ADMIN_USER: 'brajam'
-```  
-Admin username for the service.  
-```yaml
-    ADMIN_PASS: '${ADMIN_PASS}'
-```  
-Admin password for the service. This should be set as an environment variable or a `.env` file.  
-```yaml
-    WAIT_TIME: '1h'
-```  
-Time to wait before performing a port forward operation (can be set in hours, minutes, or seconds).  
-```yaml
-    volumes: 
-        - /mnt/gluetun:/mnt/gluetun
-```  
-The path to mount the `gluetun` directory in the container.  
+- `QBITTORRENT_HOST: "http://192.168.0.7:8112"`
+  - The URL for the qBittorrent web interface, including the protocol and port.
+
+- `QBITTORRENT_USERNAME: "admin"`
+  - The username for authenticating with the qBittorrent web interface.
+
+- `QBITTORRENT_PASSWORD: "admin1234"`
+  - The password for authenticating with the qBittorrent web interface.
+
+- `CHECK_INTERVAL_TORRENT_MONITORING: 10s`
+  - The time interval for monitoring torrents, defined in seconds (`s`), minutes (`m`), or hours (`h`).
+
+- `CHECK_INTERVAL_FORWARDED_PORT: 1h`
+  - The time interval for checking and updating the forwarded port, defined in seconds (`s`), minutes (`m`), or hours (`h`).
+
+- `PORT_FORWARDING: "off"`
+  - Specifies whether port forwarding is enabled or disabled. Use `on` to enable and `off` to disable.
+
+- `PORT_FORWARD_FILE: /mnt/gluetun/forwarded_port`
+  - The file path on the host machine where the forwarded port information is stored.
+
+- `DISCORD_WEBHOOK_URL: 123`
+  - The URL of the Discord webhook used to send notifications.
+
+- `PUID: "1000"`
+  - The user ID to run the container processes as, matching the host system's user.
+
+- `PGID: "1000"`
+  - The group ID to run the container processes as, matching the host system's group.
+
+
+## Volumes Explained  
+
+- `/mnt/gluetun:/mnt/gluetun`
+  - Maps the host directory `/mnt/gluetun` where the port_forward file is located, only required if `PORT_FORWARDING` is set to `on`.
+
+- `/mnt/qbit-monitor:/app/state`
+  - Maps the host directory `/mnt/qbit-monitor` to the container directory `/app/state`, used for storing state information.
+
 
 ## Contributing
 

@@ -46,8 +46,15 @@ fi
 # Login to qBittorrent
 login_to_qbittorrent
 
-# Start port forward monitoring in the background
-monitor_qbittorrent_port &
+
+# Check if PORT_FORWARDING is set to 'on'
+if [[ "$PORT_FORWARDING" == "on" ]]; then
+    echo "Port forwarding is enabled. Starting qbittorrent listen port check..."
+    # Start port forward monitoring in the background
+    monitor_qbittorrent_port &
+else
+    echo "Port forwarding is disabled. Skipping qbittorrent listen port update."
+fi
 
 # Main loop
 while true; do
