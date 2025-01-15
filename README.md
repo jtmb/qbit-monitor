@@ -38,9 +38,23 @@
 
 ### <h1>About ( What problem does this solve? )</h1>
 
-Monitors your qBittorrent for new / completed torrents and notifies on discord, also handles qbittorrent meta data stuck torrents.
+This application enhances your qBittorrent experience with two powerful features:
 
-The GluetenVPN container allows for port forwarding with PROTONVPN with the unfortunate downside that PROTON assigns a random port everytime you restart your container. This application will check the vpn forewarded port and update your qbittorrent application automatically.
+1. **Torrent Monitoring & Discord Notifications**  
+   Automatically monitors your qBittorrent for new and completed torrents, sending real-time notifications to your Discord channel. It also handles stuck torrents caused by metadata issues, keeping your downloads running smoothly.
+
+2. **ProtonVPN Port Forwarding Integration**  
+   If you're using the GluetenVPN container for ProtonVPN, you know the pain of random port assignments after each container restart. This application solves that problem by automatically checking the VPN-assigned forwarded port and updating your qBittorrent configuration accordingly.
+
+---
+
+### Features:
+- Real-time torrent status notifications on Discord.
+- Automatic resolution of metadata-stuck torrents.
+- Seamless integration with ProtonVPN for dynamic port forwarding.
+- Easy setup and lightweight operation.
+
+Take your qBittorrent setup to the next level! 🚀
 
 
 <details>
