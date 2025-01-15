@@ -76,19 +76,16 @@ services:
                 condition: service_started
                 restart: true
         environment:
-            QBITTORRENT_HOST: "http://192.168.0.5:8112"
+            QBITTORRENT_HOST: "http://qbittorrent:8112"
             QBITTORRENT_USERNAME: "admin"
             QBITTORRENT_PASSWORD: "admin1234"
             CHECK_INTERVAL_TORRENT_MONITORING: 10s
             CHECK_INTERVAL_FORWARDED_PORT: 1h
-            NOTIFIED_FILE: notified_torrents.txt
             PORT_FORWARD_FILE: /mnt/gluetun/forwarded_port
-            WAIT_TIME: "10s"
+            DISCORD_WEBHOOK_URL: xxxx
             PUID: "1000"
             PGID: "1000"
             TZ: America/New_York
-            DISCORD_WEBHOOK_URL: xxxx
-
         volumes:
         - /mnt/gluetun:/mnt/gluetun
 ```
