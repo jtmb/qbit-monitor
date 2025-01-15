@@ -20,6 +20,3 @@ EOF
 echo ""
 echo -e "${YELLOW}qBit Monitor${RESET} is ${GREEN}Running ✅${RESET}"
 echo ""
-# Display run time
-date_time=$(date +"%Y-%m-%d %H:%M:%S")
-echo -e "|| $date_time ||"

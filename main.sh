@@ -15,6 +15,7 @@ NOTIFIED_FILE="notified_torrents.txt"
 # Source modules
 source modules/banner.sh
 source modules/common.sh
+source modules/check_qbittorrent.sh
 source modules/check_new.sh
 source modules/check_completed.sh
 source modules/check_metadata_stuck.sh
@@ -29,6 +30,13 @@ check_var "DISCORD_WEBHOOK_URL"
 check_var "CHECK_INTERVAL_TORRENT_MONITORING"
 check_var "CHECK_INTERVAL_FORWARDED_PORT"
 check_var "NOTIFIED_FILE"
+
+# Check if qBittorrent is up before proceeding
+check_qbittorrent_status
+if [ $? -ne 0 ]; then
+    echo "qBittorrent is not accessible. Exiting..." >&2
+    exit 1
+fi
 
 # Initialize notified file
 if [[ ! -f "$NOTIFIED_FILE" ]]; then
