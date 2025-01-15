@@ -25,7 +25,7 @@ services:
         condition: service_started
         restart: true
     environment:
-      QBITTORRENT_HOST: "http://192.168.0.7:8112"
+      QBITTORRENT_HOST: "http://qbittorrent:8112"
       QBITTORRENT_USERNAME: "admin"
       QBITTORRENT_PASSWORD: "admin1234"
       CHECK_INTERVAL_TORRENT_MONITORING: 10s
