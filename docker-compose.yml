@@ -37,3 +37,4 @@ services:
 
     volumes:
       - /mnt/gluetun:/mnt/gluetun
+      - /mnt/qbit-monitor:/app/state

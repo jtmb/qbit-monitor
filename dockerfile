@@ -27,7 +27,8 @@ RUN chown appuser:appgroup /app && \
     chown appuser:appgroup /app/main.sh && \
     chown -R appuser:appgroup /app/modules && \
     chmod +x /app/main.sh && \
-    chmod -R +r /app/modules
+    chmod -R +r /app/modules && \
+    chmod -R +r /app/state
 
 # Switch to the non-root user
 USER appuser
