@@ -15,7 +15,7 @@ services:
       - /mnt/qbit/config:/config
     image: lscr.io/linuxserver/qbittorrent:latest
 
-  qbit-port-forwarder:
+  qbit-monitor:
     build:
       context: .
       dockerfile: Dockerfile
