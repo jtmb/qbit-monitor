@@ -24,7 +24,7 @@ services:
         condition: service_started
         restart: true
     environment:
-      DISCORD_WEBHOOK_URL: https://discord.com/api/webhooks/1192250006023983175/H3-tcdwMjKgC0LNM6W2DI3kWoYX-mYdIqR7xMUaXJxkUAM_QcATXvtzJb4wzO0OfPT6t
+      DISCORD_WEBHOOK_URL: your-token-here
       QBITTORRENT_HOST: "http://qbittorrent:8112"
       QBITTORRENT_USERNAME: "admin"
       QBITTORRENT_PASSWORD: "admin1234"
