@@ -59,16 +59,16 @@ fi
 
 # Main loop
 while true; do
-    # Retry check_qbittorrent_status until it succeeds
     if ! check_qbittorrent_status > /dev/null 2>&1; then
         echo "qBittorrent is not accessible. Retrying in 15 seconds..." >&2
         sleep 15
         continue
     fi
+
     torrents=$(get_torrents)
     check_new_torrents "$torrents" "$NOTIFIED_FILE"
     check_completed_torrents "$torrents" "$NOTIFIED_FILE"
     check_metadata_stuck_torrents "$torrents" "$NOTIFIED_FILE"
-    echo -e "Torrents Validated. Waiting for $CHECK_INTERVAL_TORRENT_MONITORING before running again ..."
+    echo -e "Torrents Validated. Waiting for $CHECK_INTERVAL_TORRENT_MONITORING before running again..."
     sleep "$CHECK_INTERVAL_TORRENT_MONITORING"
 done

@@ -110,6 +110,7 @@ services:
       NEW_DOWNLOAD_NOTIFICATION: "on"
       METADATA_STUCK_NOTIFICATION: "on"
       DOWNLOAD_COMPLETE_NOTIFICATION: "on"
+      QBITTORRENT_STATUS_NOTIFICATION: "on"
       PUID: "1000"
       PGID: "1000"
     volumes:
@@ -154,6 +155,9 @@ services:
 
 - `DOWNLOAD_COMPLETE_NOTIFICATION: "on"`
   - Specifies whether notifications for completed downloads are enabled or disabled. Use `on` to enable and `off` to disable.
+
+- `QBITTORRENT_STATUS_NOTIFICATION: "on"`
+  - Specifies whether notifications for qBittorrent status changes are enabled or disabled. Use `on` to enable and `off` to disable.
 
 - `PUID: "1000"`
   - The user ID to run the container processes as, matching the host system's user.
