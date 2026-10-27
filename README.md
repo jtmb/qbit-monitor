@@ -191,3 +191,20 @@ Please try to create bug reports that are:
 This project is licensed under the **GNU GENERAL PUBLIC LICENSE v3**. Feel free to edit and distribute this template as you like.
 
 See [LICENSE](LICENSE) for more information.
+## Repository-backed production maintenance
+
+The container builds from the pinned maintained Alpine release in `dockerfile`.
+The repository now contains the already accepted production authentication,
+state-reading and VPN port-forwarding repairs, rather than relying on an
+unpublished image overlay. Cookies remain private, requests have bounded
+connection/operation deadlines, and the existing persistent notification queue
+and Discord/VPN behavior are preserved. Runtime values remain native Secrets
+and chart values; never commit them here.
+
+Use the existing Docker Hub `jtmb92/qbit-monitor` publication destination and
+an immutable `git-<full source commit>` tag. Supply `SOURCE_REVISION` during the
+build. GitHub Actions remains disabled; local build/validation and exact registry
+digest verification must precede chart promotion through the private local
+validator -> validated -> Flux pipeline. A source commit is not deployment
+acceptance: verify queue, authentication, VPN port monitoring, alerts and a
+distinct Pod restart against the actual cluster before claiming delivery.

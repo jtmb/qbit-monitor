@@ -1,63 +1,60 @@
 #!/bin/bash
 
-# Function to monitor and update qBittorrent port
-monitor_qbittorrent_port() {
-  # Default wait time between loops (in seconds)
-  CHECK_INTERVAL=${CHECK_INTERVAL:-10}
-
-  while true; do
-    # Get the forwarded port
-    tcpport=$(cat "${PORT_FORWARD_FILE}")
+# One authenticated, verified update; reusable by the existing background loop.
+update_qbittorrent_port() {
+    local tcpport response current_port status payload verified_port
+    tcpport=$(cat "${PORT_FORWARD_FILE}") || return 1
+    if [[ ! "$tcpport" =~ ^[0-9]{1,5}$ ]] || (( 10#$tcpport < 1 || 10#$tcpport > 65535 )); then
+        echo "Error: Invalid forwarded port" >&2
+        return 1
+    fi
+    tcpport=$((10#$tcpport))
     echo "Glueten VPN port is set to $tcpport"
+    if ! login_to_qbittorrent; then
+        echo "Login failed" >&2
+        return 1
+    fi
+    echo "Login successful"
 
-    # Login to qBittorrent and store the session cookie
-    response=$(curl -si -X POST "${QBITTORRENT_HOST}/api/v2/auth/login" \
-      --data-urlencode "username=${QBITTORRENT_USERNAME}" \
-      --data-urlencode "password=${QBITTORRENT_PASSWORD}" \
-      --cookie-jar /tmp/cookie.txt)
-    if echo "$response" | grep -q "HTTP/1.1 200 OK"; then
-      echo "Login successful"
+    response=$(qbit_api -fsS "$QBITTORRENT_HOST/api/v2/app/preferences") || return 1
+    current_port=$(jq -er '.listen_port | select(type == "number" and . == floor and . >= 1 and . <= 65535)' <<< "$response") || {
+        echo "Error: Valid listen_port missing from API response" >&2
+        return 1
+    }
+    echo "Current Qbittorrent listen_port is $current_port"
+    if [[ "$tcpport" != "$current_port" ]]; then
+        echo "Port has changed - Updating Qbittorrent listen_port to $tcpport 🚨"
+        payload=$(jq -nc --argjson port "$tcpport" '{listen_port: $port}') || return 1
+        status=$(qbit_api -sS -o /dev/null -w '%{http_code}' \
+            "$QBITTORRENT_HOST/api/v2/app/setPreferences" --data-urlencode "json=$payload") || return 1
+        [[ "$status" == 200 || "$status" == 204 ]] || return 1
+        response=$(qbit_api -fsS "$QBITTORRENT_HOST/api/v2/app/preferences") || return 1
+        verified_port=$(jq -er '.listen_port' <<< "$response") || return 1
+        if [[ "$verified_port" != "$tcpport" ]]; then
+            echo "Error: qBittorrent listen_port update was not confirmed" >&2
+            return 1
+        fi
+        echo "Qbittorrent listen_port updated to $tcpport ✔️"
+        send_discord_notification "port_updated" "$tcpport"
     else
-      echo "Login failed"
-      continue
+        echo "Port is unchanged. No update needed."
     fi
-
-    # Get the current listen_port from qBittorrent preferences
-    response=$(curl -s -b /tmp/cookie.txt "${QBITTORRENT_HOST}/api/v2/app/preferences")
-    if [ -z "$response" ]; then
-      echo "Error: Empty response from qBittorrent API"
-      continue
-    fi
-    current_port=$(echo "$response" | jq -r '.listen_port')
-    if [ "$current_port" == "null" ]; then
-      echo "Error: 'listen_port' not found in API response"
-      continue
-    fi
-
-    echo -e "Current Qbittorrent listen_port is $current_port"
-
-    # Check if the port has changed
-    if [ "$tcpport" != "$current_port" ]; then
-      echo -e "Port has changed - Updating Qbittorrent listen_port to $tcpport 🚨"
-
-      # Update the listen_port in qBittorrent preferences
-      curl -s -b /tmp/cookie.txt "${QBITTORRENT_HOST}/api/v2/app/setPreferences" \
-        -d "json={\"listen_port\": \"$tcpport\"}"
-
-      echo -e "Qbittorrent listen_port updated to $tcpport ✔️"
-      
-      # Call the function to send a Discord notification
-      send_discord_notification "port_updated" "$tcpport"
-    else
-      echo -e "Port is unchanged. No update needed."
-    fi
-
-    echo -e "Waiting for $CHECK_INTERVAL_FORWARDED_PORT before next port check iteration..."
-    sleep "$CHECK_INTERVAL_FORWARDED_PORT"
-    echo "------------------------------------------------------------------------------------"
-    echo ""
-  done
 }
 
-# Export the function for use in other scripts
+monitor_qbittorrent_port() {
+    CHECK_INTERVAL=${CHECK_INTERVAL:-10}
+    trap qbit_cookie_cleanup EXIT
+    while true; do
+        if update_qbittorrent_port; then
+            echo "Waiting for $CHECK_INTERVAL_FORWARDED_PORT before next port check iteration..."
+            sleep "$CHECK_INTERVAL_FORWARDED_PORT"
+        else
+            # Failed logins/requests must not create a tight retry/ban loop.
+            sleep "$CHECK_INTERVAL"
+        fi
+        echo "------------------------------------------------------------------------------------"
+        echo ""
+    done
+}
+
 export -f monitor_qbittorrent_port

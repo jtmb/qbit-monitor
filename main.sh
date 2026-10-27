@@ -21,6 +21,7 @@ source modules/check_completed.sh
 source modules/check_metadata_stuck.sh
 source modules/send_discord_notification.sh 
 source modules/qbit-port-forwarder.sh
+trap qbit_cookie_cleanup EXIT
 
 # Check mandatory environment variables
 check_var "QBITTORRENT_HOST"
@@ -65,7 +66,11 @@ while true; do
         continue
     fi
 
-    torrents=$(get_torrents)
+    if ! torrents=$(get_torrents); then
+        echo "Unable to retrieve torrent state. Retrying in 15 seconds..." >&2
+        sleep 15
+        continue
+    fi
     check_new_torrents "$torrents" "$NOTIFIED_FILE"
     check_completed_torrents "$torrents" "$NOTIFIED_FILE"
     check_metadata_stuck_torrents "$torrents" "$NOTIFIED_FILE"
