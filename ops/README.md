@@ -28,3 +28,7 @@ local validation -> validated -> Flux. Prove real queue cycles, native login,
 forwarded-port updates, existing notification queue, alerts configuration and an
 independent restart before claiming production acceptance. Do not send an extra
 Discord test message without the applicable user authorization.
+
+The clean-source check applies Windows checkout line-ending rules per command;
+no global Git setting or working file is normalized. Build inputs come from raw
+immutable Git blobs, independent of the working-tree CRLF representation.
